@@ -18,6 +18,8 @@ export const Container: React.FC<ContainerProps> = ({
   align,
   direction,
   className,
+  layoutType, // destructure to avoid passing to DOM
+  gutter,     // destructure to avoid passing to DOM
   ...rest
 }) => {
   
