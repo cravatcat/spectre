@@ -7,7 +7,7 @@ registry.register({
   component: Container,
   formComponent: ContainerSettings,
   behavior: {
-    whitelist: ['Container'],
+    whitelist: ['Container', 'Form'],
     droppable: true,
     defaultProps: {
       layoutType: 'flex',

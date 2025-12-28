@@ -7,16 +7,55 @@ import { registry } from './registry';
 const initialComponents: Record<string, ComponentNode> = {
   'root': {
     id: 'root',
-    type: 'Container', // Renamed from Layout to Container for clarity
+    type: 'Container',
     props: {
       layoutType: 'flex',
-      direction: 'column',
+      direction: 'row', // Horizontal layout
       justify: 'start',
       align: 'stretch',
       style: { height: '100%', padding: '20px', background: '#f0f2f5' }
     },
-    children: [],
+    children: ['container-1', 'form-1'],
     style: { height: '100%', minHeight: '500px' }
+  },
+  'container-1': {
+    id: 'container-1',
+    type: 'Container',
+    props: {
+      layoutType: 'flex',
+      direction: 'column',
+      style: {
+        backgroundColor: '#ffffff',
+        flex: 2, // 2/3 width
+        marginRight: '10px',
+      }
+    },
+    style: {
+      flex: 2, // 2/3 width
+      marginRight: '10px',
+      backgroundColor: '#ffffff',
+    },
+    children: [],
+    parentId: 'root'
+  },
+  'form-1': {
+    id: 'form-1',
+    type: 'Form',
+    props: {
+      layout: 'vertical',
+      style: {
+        backgroundColor: '#ffffff',
+        flex: 1, // 1/3 width
+        padding: '10px'
+      }
+    },
+    style: {
+      flex: 1, // 1/3 width
+      backgroundColor: '#ffffff',
+      padding: '1px'
+    },
+    children: [],
+    parentId: 'root'
   }
 };
 
@@ -50,13 +89,18 @@ export const useEditorStore = create<EditorState>()(
         const def = registry.get(type);
         const defaultProps = def?.behavior?.defaultProps || {};
         const defaultStyle = def?.behavior?.defaultStyle || {};
+        
+        // Ensure unique name for form fields if name is present in defaultProps
+        const finalProps = { ...defaultProps, ...initialProps };
+        if (finalProps.name) {
+             finalProps.name = `${finalProps.name}_${newId}`;
+        }
 
         const newNode: ComponentNode = {
           id: newId,
           type,
           props: {
-            ...defaultProps,
-            ...initialProps,
+            ...finalProps,
             style: { 
               ...defaultStyle,
               ...(initialProps?.style || {})

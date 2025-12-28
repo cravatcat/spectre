@@ -92,7 +92,7 @@ export const EditorWrapper: React.FC<EditorWrapperProps> = ({
   const dynamicStyle: React.CSSProperties = {
     flex: node.style?.flex,
     ...node.style,
-    padding: undefined, // Let the inner component handle padding
+    // padding: undefined, // Let the inner component handle padding
     position: 'relative', // Ensure positioning context
   };
 
